@@ -19,7 +19,8 @@ class CommonReponse(object):
 
 @dataclass
 class QueryCMCCBalanceResponse(CommonReponse):
-    pass
+
+    points: int
 
 
 @dataclass
