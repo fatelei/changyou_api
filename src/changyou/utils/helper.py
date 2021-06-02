@@ -8,7 +8,7 @@ def sign_body(body: OrderedDict, sign_key: str) -> str:
     for key in body:
         if key == 'callbackUrl':
             value_ary.append(quote_plus(body[key]))
-        elif body[key].endswith('='):
+        elif key == 'fingerprint':
             value_ary.append(quote_plus(body[key]))
         else:
             value_ary.append(body[key])

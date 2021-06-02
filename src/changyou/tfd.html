@@ -1,0 +1,21 @@
+<html>
+    <script type='text/javascript'>
+        let sessionId = '';
+        (function () {
+            let url;
+            if (document.domain === 'm.changyoyo.com') {
+                url = "tfd.changyoyo.com";
+            } else {
+                url = "101.132.237.10";
+            }
+            const appId = "5308e20b";
+            const appkey = "3daf27ea2fe840ada6af8e1ec0d7b760";
+            const ts = new Date().getTime();
+            sessionId = "changyo-pc-" + ts + "-" + Math.random().toString(16).substr(2);
+            window.sessionId = sessionId;
+            with(document){
+                [getElementsByTagName('script')[0].parentNode.appendChild(createElement('script')).src = "//" + url + "/did/js/dp.js?appId=" + appId + "&appkey=" + appkey + "&sessionId=" + sessionId + "&ts=" + ts][0];
+            }
+        })();
+    </script>
+</html>

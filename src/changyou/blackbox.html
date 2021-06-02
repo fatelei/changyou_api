@@ -1,0 +1,30 @@
+<html>
+    <head>
+    <script src="https://static.tongdun.net/monitor/monitor.js"  async crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        let blackbox;
+        (function() {
+            window._fmOpt = {
+                partner: 'changyou',
+                appName: 'changyou_web',
+                token: 'changyou' + "-" + new Date().getTime() + "-"+ Math.random().toString(16).substr(2),
+                fmb: true,
+                success: function(data) {
+                    blackbox = data;
+                },  
+                fpHost:"https://fp.tongdun.net"                
+            };
+            var cimg = new Image(1,1);
+            cimg.onload = function() {
+                _fmOpt.imgLoaded = true;
+            };
+            cimg.src = "https://fp.tongdun.net/fp/clear.png?partnerCode=changyou&appName=changyou_web&tokenId=" + _fmOpt.token;
+            var fm = document.createElement('script'); fm.type = 'text/javascript'; 
+    fm.async = true;
+            fm.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 
+    'static.tongdun.net/v3/fm.js?ver=0.1&t=' + (new Date().getTime()/3600000).toFixed(0);
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(fm, s);
+        })();
+    </script>
+    </head>
+</html>
