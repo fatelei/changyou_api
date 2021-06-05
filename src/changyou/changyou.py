@@ -60,7 +60,10 @@ class ChangyouClient(object):
         }))
         data = self.__do_post_request('/partner-gateway/points/output/queryCmccBalance', common_param)
         if data['resultCode'] != '0000':
-            asyncio.get_event_loop().run_until_complete(self.transition_page(
+            loop = asyncio.get_event_loop()
+            if loop is None:
+                loop = asyncio.new_event_loop()
+            loop.run_until_complete(self.transition_page(
                 mobile=mobile,
                 out_token_id=out_token_id,
                 callback_url=callback_url,
@@ -115,7 +118,10 @@ class ChangyouClient(object):
         })
         params['hmac'] = helper.sign_body(params, self.sign_key)
         params_str = parse.urlencode(params, safe='=')
-        browser = await launch({'headless': True})
+        browser = await launch(headless=True,
+                               handleSIGINT=False,
+                               handleSIGTERM=False,
+                               handleSIGHUP=False)
         page = await browser.newPage()
         url = f'{self.endpoint}/event/2019/blankPage/index.html?{params_str}'
         print(url)
