@@ -182,7 +182,7 @@ class ChangyouClient(object):
 
         common_param.update(OrderedDict({
             'outTokenId': out_token_id,
-            'points': '360',
+            'points': str(points),
             'goodsInfo': goods_info,
             'reserved1': reserved_1 if reserved_1 is not None else '',
             'reserved2': reserved_2 if reserved_2 is not None else '',
