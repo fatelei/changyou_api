@@ -178,12 +178,16 @@ class ChangyouClient(object):
         tmp_goods_info = json.loads(goods_info)
         points = 0
         for item in tmp_goods_info.get('goodslist', []):
-            points += int(item['goodsPrice']) * int(item['goodsNum']) * 120
+            goods_price = int(item['goodsPrice'])
+            goods_num = int(item['goodsNum'])
+            tmp = goods_price * goods_num * 120
+            item['goodsPrice'] = tmp
+            points += tmp
 
         common_param.update(OrderedDict({
             'outTokenId': out_token_id,
             'points': str(points),
-            'goodsInfo': goods_info,
+            'goodsInfo': json.dumps(tmp_goods_info),
             'reserved1': reserved_1 if reserved_1 is not None else '',
             'reserved2': reserved_2 if reserved_2 is not None else '',
             'reserved3': reserved_3 if reserved_1 is not None else '',
@@ -191,6 +195,7 @@ class ChangyouClient(object):
             'sessionid': session_id,
             'fingerprint': fingerprint
         }))
+
         data = self.__do_post_request('/partner-gateway/points/output/placeOrder', common_param)
         return PlaceOrderResponse(
             request_id=data['requestId'],
