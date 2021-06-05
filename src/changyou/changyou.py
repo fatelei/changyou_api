@@ -60,8 +60,9 @@ class ChangyouClient(object):
         }))
         data = self.__do_post_request('/partner-gateway/points/output/queryCmccBalance', common_param)
         if data['resultCode'] != '0000':
-            loop = asyncio.get_event_loop()
-            if loop is None:
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
                 loop = asyncio.new_event_loop()
             loop.run_until_complete(self.transition_page(
                 mobile=mobile,

@@ -33,15 +33,17 @@ class Tongdun(object):
         return blackbox
 
     def get_session_id(self):
-        loop = asyncio.get_event_loop()
-        if loop is None:
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
             loop = asyncio.new_event_loop()
         session_id = loop.run_until_complete(self.async_get_session_id())
         return session_id
 
     def get_blackbox(self):
-        loop = asyncio.get_event_loop()
-        if loop is None:
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
             loop = asyncio.new_event_loop()
         blackbox = loop.run_until_complete(self.async_get_blackbox())
         return blackbox
