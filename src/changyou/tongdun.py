@@ -27,7 +27,8 @@ class Tongdun(object):
         browser = await launch(headless=True,
                                handleSIGINT=False,
                                handleSIGTERM=False,
-                               handleSIGHUP=False)
+                               handleSIGHUP=False,
+                               args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto(f'file://{blackbox_html}', {'waitUntil': 'networkidle2'})
         blackbox = await page.evaluate('''() => blackbox''')
