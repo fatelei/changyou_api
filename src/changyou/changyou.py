@@ -122,7 +122,8 @@ class ChangyouClient(object):
         browser = await launch(headless=True,
                                handleSIGINT=False,
                                handleSIGTERM=False,
-                               handleSIGHUP=False)
+                               handleSIGHUP=False,
+                               args=['--no-sandbox'])
         page = await browser.newPage()
         url = f'{self.endpoint}/event/2019/blankPage/index.html?{params_str}'
         print(url)
