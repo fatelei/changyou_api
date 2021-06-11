@@ -21,6 +21,7 @@ from .model import DetectOrderResponse
 from .model import QueryCMCCBalanceResponse
 from .model import QueryOrderResponse
 from .model import PlaceOrderResponse
+from .model import CheckoutOrderResponse
 
 from .tongdun import Tongdun
 
@@ -37,6 +38,26 @@ class ChangyouClient(object):
         self.partener_id = partener_id
         self.version = version
         self.tongdun_cli = Tongdun()
+
+    @staticmethod
+    def make_coupon_data(goods_no: str,
+                         coupon_no: str,
+                         coupon_pwd: str,
+                         status: str,
+                         available_begin_time: str,
+                         available_end_time: str,
+                         coupon_create_time: str,
+                         consume_time: str) -> dict:
+        return {
+            'goodsNo': goods_no,
+            'couponNo': coupon_no,
+            'couponPwd': coupon_pwd,
+            'status': status,
+            'availableBeginTime': available_begin_time,
+            'availableEndTime': available_end_time,
+            'couponCreateTime': coupon_create_time,
+            'consumeTime': consume_time
+        }
 
     def query_cmcc_balance(self,
                            mobile: str,
@@ -332,6 +353,38 @@ class ChangyouClient(object):
             good_order_id=data.get('goodOrderId', ''),
             points=data.get('points', '0'),
             status=data.get('status', '')
+        )
+
+    def checkout_order(self,
+                       good_order_id: str,
+                       out_token_id: str,
+                       order_date: str,
+                       data: list,
+                       reserved_1: Union[str, None] = None,
+                       reserved_2: Union[str, None] = None) -> CheckoutOrderResponse:
+        common_param = self.common_param('CYW0001')
+        common_param.update(OrderedDict({
+            'goodOrderId': good_order_id,
+            'outTokenId': out_token_id,
+            'orderDate': order_date,
+            'data': json.dumps(data),
+            'reserved1': reserved_1 if reserved_1 is not None else '',
+            'reserved2': reserved_2 if reserved_2 is not None else '',
+        }))
+        data = self.__do_post_request('/partner-gateway/points/output/checkOutOrder', common_param)
+        return CheckoutOrderResponse(
+            request_id=data['requestId'],
+            result_code=data['resultCode'],
+            hmac=data['hmac'],
+            sign_type=data['signType'],
+            partener_id=self.partener_id,
+            inter_code=data['interCode'],
+            type=data['type'],
+            message=data['message'],
+            version=data['version'],
+            reserved_1=data.get('reversed1', ''),
+            reserved_2=data.get('reversed2', ''),
+            good_order_id=data.get('goodOrderId', '')
         )
 
     def __do_post_request(self, path: str, body: OrderedDict) -> dict:

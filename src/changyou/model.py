@@ -66,3 +66,9 @@ class CancelOrderResponse(CommonReponse):
     good_order_id: str
     points: str
     status: str
+
+
+@dataclass
+class CheckoutOrderResponse(CommonReponse):
+
+    good_order_id: str

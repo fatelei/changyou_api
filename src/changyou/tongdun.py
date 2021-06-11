@@ -12,17 +12,6 @@ blackbox_html = os.path.join(dirname, 'blackbox.html')
 
 class Tongdun(object):
 
-    # async def async_get_session_id(self):
-    #     browser = await launch(headless=True,
-    #                            handleSIGINT=False,
-    #                            handleSIGTERM=False,
-    #                            handleSIGHUP=False)
-    #     page = await browser.newPage()
-    #     await page.goto(f'file://{tfd_html}', {'waitUntil': 'networkidle2'})
-    #     session_id = await page.evaluate('''() => sessionId''')
-    #     await browser.close()
-    #     return session_id
-
     async def async_get_blackbox(self):
         browser = await launch(headless=True,
                                handleSIGINT=False,

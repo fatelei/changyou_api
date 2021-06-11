@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="changyou",
-    version="1.0.4",
+    version="1.0.5",
     author="fatelei",
     author_email="fatelei@gmail.com",
     description="changyou api client",
