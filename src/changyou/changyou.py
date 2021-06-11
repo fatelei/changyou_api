@@ -183,7 +183,7 @@ class ChangyouClient(object):
             reserved_1=data.get('reversed1', ''),
             reserved_2=data.get('reversed2', ''),
             status=data['status'],
-            order_id=data['orderId']
+            order_id=data.get('orderId', '')
         )
 
     def place_order(self,
