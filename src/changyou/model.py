@@ -42,14 +42,10 @@ class PlaceOrderResponse(CommonReponse):
 
 
 @dataclass
-class DetectOrderResponse(CommonReponse):
+class DetectOrderResponse(object):
 
-    out_token_id: str
-    order_id: str
-    good_order_id: str
-    mobile: str
-    trans_status: str
-    trans_time: str
+    result_code: str
+    message: str
 
 
 @dataclass
@@ -72,3 +68,29 @@ class CancelOrderResponse(CommonReponse):
 class CheckoutOrderResponse(CommonReponse):
 
     good_order_id: str
+
+
+@dataclass
+class SendPaySmsResponse(object):
+
+    result_code: str
+    message: str
+
+
+@dataclass
+class ExchangeResponse(object):
+
+    order_id: str
+    mobile: str
+    trans_time: str
+    good_order_id: str
+    result_code: str
+    out_token_id: str
+    message: str
+
+
+@dataclass
+class QueryChangyoPointsResponse(CommonReponse):
+
+    out_token_id: str
+    points: str

@@ -26,7 +26,7 @@ if __name__ == '__main__':
         "reciverAddress": "街道XXXXX",
         "deliveryMethos": "配送方式",
         "goodslist": [
-            {"goodsNo": "","goodsName": "","goodsBrand": "","goodsCategory": "","taxRate": "0.06","goodsNum": "1","goodsPrice": "1"}
+            {"goodsNo": "YASHAN0001","goodsName": "心相印抽纸兑换券","goodsBrand": "亚杉","goodsCategory": "","taxRate": "0.06","goodsNum": "1","goodsPrice": "1"}
         ]
     })
     

@@ -15,8 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('--order_id', type=str, dest='order_id', required=True)
     parser.add_argument('--good_order_id', type=str, dest='good_order_id', required=True)
     parser.add_argument('--sms_code', type=str, dest='sms_code', required=True)
-    parser.add_argument('--points', type=str, dest='points', required=True)
-    parser.add_argument('--real_points', type=str, dest='real_points', required=True)
     args = parser.parse_args()
 
     cli = ChangyouClient(auth_token=args.auth_token,
@@ -28,8 +26,6 @@ if __name__ == '__main__':
     res = cli.detect_order(out_token_id=args.out_token_id,
                            order_id=args.order_id,
                            good_order_id=args.good_order_id,
-                           sms_code=args.sms_code,
-                           points=args.points,
-                           real_points=args.real_points,
+                           opt_code=args.sms_code,
                            machine_type='H5')
     print(res)
