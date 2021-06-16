@@ -366,9 +366,9 @@ class ChangyouClient(object):
             version=data['version'],
             reserved_1=data.get('reversed1', ''),
             reserved_2=data.get('reversed2', ''),
-            order_id=data['orderId'],
+            order_id=order_id,
             sms_status=data['smsStatus'],
-            mobile=data['mobile']
+            mobile=mobile
         )
 
     def cancel_order(self,
