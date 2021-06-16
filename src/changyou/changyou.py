@@ -1,5 +1,6 @@
 import asyncio
 import json
+import re
 import requests
 import uuid
 from base64 import b64encode
@@ -29,6 +30,8 @@ from .model import QueryChangyoPointsResponse
 from .tongdun import Tongdun
 
 from .utils import helper
+
+opt_code_re = re.compile(r'\d{4}')
 
 
 class ChangyouClient(object):
@@ -259,6 +262,17 @@ class ChangyouClient(object):
             result_code=data['resultCode'],
             message=data.get('message', '')
         )
+
+    def get_pay_sms_code(self,
+                         mobile: str) -> str:
+        resp = requests.get(f'https://test-m-stg.ppppoints.com/verifyCode/{mobile}')
+        data = resp.json()
+        code = data.get('code', '')
+        if code:
+            rsts = opt_code_re.findall(code)
+            if rsts:
+                return rsts[0]
+        return ''
     
     def exchange(self,
                  order_id: str,
