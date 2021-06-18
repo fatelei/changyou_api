@@ -10,8 +10,6 @@ from typing import OrderedDict
 from typing import Union
 from urllib import parse
 
-from pyppeteer import launch
-
 from .exception import BadRequest
 from .exception import InternalServerError
 from .exception import MobileRequiredException
@@ -26,6 +24,7 @@ from .model import CheckoutOrderResponse
 from .model import SendPaySmsResponse
 from .model import ExchangeResponse
 from .model import QueryChangyoPointsResponse
+from .model import RegisterPageResponse
 
 from .tongdun import Tongdun
 
@@ -86,22 +85,6 @@ class ChangyouClient(object):
             'reserved2': reserved_2 if reserved_2 is not None else ''
         }))
         data = self.__do_post_request('/partner-gateway/points/output/queryCmccBalance', common_param)
-        if data['resultCode'] != '0000':
-            try:
-                loop = asyncio.get_event_loop()
-            except RuntimeError:
-                loop = asyncio.new_event_loop()
-            loop.run_until_complete(self.transition_page(
-                mobile=mobile,
-                out_token_id=out_token_id,
-                callback_url=callback_url,
-                channel_source=channel_source,
-                reserved_1=reserved_1,
-                reserved_2=reserved_2
-            ))
-
-            data = self.__do_post_request('/partner-gateway/points/output/queryCmccBalance', common_param)
-
         return QueryCMCCBalanceResponse(
             request_id=data['requestId'],
             result_code=data['resultCode'],
@@ -117,13 +100,13 @@ class ChangyouClient(object):
             points=data.get('points', '0')
         )
 
-    async def transition_page(self,
-                              mobile: str,
-                              out_token_id: str,
-                              callback_url: str,
-                              channel_source: str,
-                              reserved_1: Union[str, None] = None,
-                              reserved_2: Union[str, None] = None):
+    def transition_page(self,
+                        mobile: str,
+                        out_token_id: str,
+                        callback_url: str,
+                        channel_source: str,
+                        reserved_1: Union[str, None] = None,
+                        reserved_2: Union[str, None] = None) -> RegisterPageResponse:
         version = b64encode(self.version.encode('utf8')).decode('utf8')
         ip_address = b64encode(self.public_ip.encode('utf8')).decode('utf8')
         params = OrderedDict({
@@ -146,17 +129,9 @@ class ChangyouClient(object):
         })
         params['hmac'] = helper.sign_body(params, self.sign_key)
         params_str = parse.urlencode(params, safe='=')
-        browser = await launch(headless=True,
-                               handleSIGINT=False,
-                               handleSIGTERM=False,
-                               handleSIGHUP=False,
-                               args=['--no-sandbox'])
-        page = await browser.newPage()
         url = f'{self.endpoint}/event/2019/blankPage/index.html?{params_str}'
-        print(url)
-        await page.goto(url, {'waitUntil': 'networkidle2'})
-        await browser.close()
-    
+        return RegisterPageResponse(url=url)
+
     def query_order(self,
                     order_id: str,
                     order_date: str,

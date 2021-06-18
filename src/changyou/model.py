@@ -24,6 +24,12 @@ class QueryCMCCBalanceResponse(CommonReponse):
 
 
 @dataclass
+class RegisterPageResponse(object):
+
+    url: str
+
+
+@dataclass
 class QueryOrderResponse(CommonReponse):
 
     status: str

@@ -1,6 +1,20 @@
 import argparse
+import asyncio
+
+from pyppeteer import launch
 
 from changyou.changyou import ChangyouClient
+
+
+async def visit_register_page(url):
+    browser = await launch(headless=True,
+                           handleSIGINT=False,
+                           handleSIGTERM=False,
+                           handleSIGHUP=False,
+                           args=['nosandbox'])
+    page = await browser.newPage()
+    await page.goto(url, {'waitUntil': 'networkidle2'})
+    await browser.close()
 
 
 if __name__ == '__main__':
@@ -25,4 +39,17 @@ if __name__ == '__main__':
                                  out_token_id=args.out_token_id,
                                  callback_url='https://www.baidu.com',
                                  out_type='01')
+    if res.result_code != '0000':
+        res = cli.transition_page(mobile=args.mobile,
+                                  out_token_id=args.out_token_id,
+                                  channel_source=args.channel_source,
+                                  callback_url='https://www.baidu.com')
+        print(res['url'])
+        asyncio.get_event_loop().run_until_complete(visit_register_page(res['url']))
+
+        res = cli.query_cmcc_balance(mobile=args.mobile,
+                                     channel_source=args.channel_source,
+                                     out_token_id=args.out_token_id,
+                                     callback_url='https://www.baidu.com',
+                                     out_type='01')
     print(res)
