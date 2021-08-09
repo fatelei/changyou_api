@@ -288,10 +288,44 @@ class ChangyouClient(object):
                      out_token_id: str,
                      order_id: str,
                      good_order_id: str,
-                     opt_code: str,
+                     sms_code: str,
+                     points: str,
+                     real_points: str,
                      machine_type: str,
                      reserved_1: Union[str, None] = None,
                      reserved_2: Union[str, None] = None) -> DetectOrderResponse:
+        if machine_type not in ('IOS', 'Android', 'H5', 'MiniProgram'):
+            raise BadRequest(f'{machine_type} 必须为：IOS / Android / H5 / MiniProgram')
+        common_param = self.common_param('CYS0004')
+        session_id = self.tongdun_cli.get_session_id()
+        fingerprint = self.tongdun_cli.get_blackbox()
+        common_param.update(OrderedDict({
+            'outTokenId': out_token_id,
+            'orderId': order_id,
+            'goodOrderId': good_order_id,
+            'reserved1': reserved_1 if reserved_1 is not None else '',
+            'reserved2': reserved_2 if reserved_2 is not None else '',
+            'sessionid': session_id,
+            'fingerprint': fingerprint,
+            'machinetype': machine_type,
+            'smsCode': sms_code,
+            'points': points,
+            'realPoints': real_points
+        }))
+        data = self.__do_post_request('/partner-gateway/points/output/dectOrder', common_param)
+        return DetectOrderResponse(
+            result_code=data['resultCode'],
+            message=data['message']
+        )
+
+    def pay_order(self,
+                  out_token_id: str,
+                  order_id: str,
+                  good_order_id: str,
+                  opt_code: str,
+                  machine_type: str,
+                  reserved_1: Union[str, None] = None,
+                  reserved_2: Union[str, None] = None) -> DetectOrderResponse:
         if machine_type not in ('IOS', 'Android', 'H5', 'MiniProgram'):
             raise BadRequest(f'{machine_type} 必须为：IOS / Android / H5 / MiniProgram')
         common_param = self.common_param('CYS0009')

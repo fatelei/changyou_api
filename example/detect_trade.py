@@ -16,7 +16,9 @@ if __name__ == '__main__':
     parser.add_argument('--out_token_id', type=str, dest='out_token_id', required=True)
     parser.add_argument('--order_id', type=str, dest='order_id', required=True)
     parser.add_argument('--good_order_id', type=str, dest='good_order_id', required=True)
-    parser.add_argument('--mobile', type=str, dest='mobile', required=True)
+    parser.add_argument('--sms_code', type=str, dest='sms_code', required=True)
+    parser.add_argument('--points', type=str, dest='points', required=True)
+    parser.add_argument('--real_points', type=str, dest='real_points', required=True)
     args = parser.parse_args()
 
     cli = ChangyouClient(auth_token=args.auth_token,
@@ -25,12 +27,11 @@ if __name__ == '__main__':
                          public_ip=args.public_ip,
                          partener_id=args.partener_id)
 
-    opt_code = cli.get_pay_sms_code(mobile=args.mobile)
-    if opt_code:
-        print(opt_code)
-        res = cli.detect_order(out_token_id=args.out_token_id,
-                            order_id=args.order_id,
-                            good_order_id=args.good_order_id,
-                            opt_code=opt_code,
-                            machine_type='H5')
-        print(res)
+    res = cli.detect_order(out_token_id=args.out_token_id,
+                           order_id=args.order_id,
+                           good_order_id=args.good_order_id,
+                           sms_code=args.sms_code,
+                           points=args.points,
+                           real_points=args.real_points,
+                           machine_type='H5')
+    print(res)
