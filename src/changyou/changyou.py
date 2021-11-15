@@ -1,4 +1,3 @@
-import asyncio
 import json
 import re
 import requests
@@ -481,6 +480,7 @@ class ChangyouClient(object):
         hmac = helper.sign_body(body, self.sign_key)
         data = deepcopy(body)
         data['hmac'] = hmac
+        print(json.dumps(data, indent=2))
         resp = requests.post(f'{self.endpoint}{path}',
                              headers={'AuthToken': self.auth_token, 'X-FORWARDED-FOR': self.public_ip},
                              data=data)
